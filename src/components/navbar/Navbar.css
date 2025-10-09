@@ -1,0 +1,57 @@
+.navbar .container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0px;
+}
+
+.logo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.logo svg{
+    font-size: 25px;
+    color: blue;
+}
+
+.logo h1{
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.navbar .links{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+
+.navbar .links li{
+    font-size: 18px;
+    font-weight: 500;
+    color: black;
+    cursor: pointer;
+}
+
+.navbar .icons{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 10px;
+}
+
+.navbar .icons p{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: transparent;
+    color: black;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
