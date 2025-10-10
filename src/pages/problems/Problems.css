@@ -1,0 +1,17 @@
+.problems .container{
+    padding: 20px 0px;
+}
+
+
+.problems-panel .problems_questions a{
+    display: block;
+    text-decoration: none;
+    color: black;
+    background-color: gray;
+    margin-bottom: 20px;
+    padding: 20px;
+    font-size: 20px;
+    font-weight: 500;
+    border-radius: 10px;
+    cursor: pointer;
+}

@@ -1,24 +1,27 @@
 import React from "react";
 import "./Navbar.css";
-import { FaCode, FaRegUser } from "react-icons/fa";
+import { FaCode, FaCoins, FaRegUser } from "react-icons/fa";
+import { Link, NavLink } from "react-router-dom";
 
 function Navbar() {
+
+
   return (
     <>
       <div className="navbar">
         <div className="container">
-          <div className="logo">
+          <Link to={"/"} className="logo">
             <FaCode />
             <h1>CodeAbz</h1>
-          </div>
+          </Link>
           <ul className="links">
-            <li>salom</li>
-            <li>salom</li>
-            <li>salom</li>
+            <NavLink to={"/"}>Bosh sahifa</NavLink>
+            <NavLink to={"/problems"}>Masalalar</NavLink>
+            <NavLink to={"/notice"}>Komentariyalar</NavLink>
           </ul>
           <div className="icons">
             <p>
-              <FaCode />
+              <FaCoins />
             </p>
             <p>
               <FaRegUser />
