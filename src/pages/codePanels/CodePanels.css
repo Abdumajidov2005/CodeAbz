@@ -1,0 +1,45 @@
+.codePanels .container {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  font-family: "Fira Code", monospace;
+  padding: 30px 0px;
+}
+
+.coding {
+  width: 490px;
+  border: 2px solid red;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.coding .coding-titles{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.leveles{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 0px;
+}
+
+.leveles span{
+  display: block;
+  padding: 4px 10px;
+  background-color: rgba(128, 128, 128, 0.386);
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: black;
+  cursor: pointer;
+}
+
+.leveles span:nth-child(1){
+  color: green;
+}

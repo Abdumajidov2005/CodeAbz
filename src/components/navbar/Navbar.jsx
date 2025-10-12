@@ -15,8 +15,7 @@ function Navbar() {
             <h1>CodeAbz</h1>
           </Link>
           <ul className="links">
-            <NavLink to={"/"}>Bosh sahifa</NavLink>
-            <NavLink to={"/problems"}>Masalalar</NavLink>
+            <NavLink to={"/"}>Masalalar</NavLink>
             <NavLink to={"/notice"}>Komentariyalar</NavLink>
           </ul>
           <div className="icons">

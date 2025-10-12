@@ -2,9 +2,10 @@
   position: sticky;
   width: 100%;
   top: 0px;
-  background-color: rgba(252, 250, 250, 0.763);
+  background-color: rgba(252, 250, 250, 0.851);
   backdrop-filter: blur(4px);
   border-bottom: 0.2px solid rgba(0, 0, 0, 0.475);
+  z-index: 99;
 }
 
 .navbar .container {
