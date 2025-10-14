@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./CodePanels.css";
 import CodeEditor from "../../components/codeEditor/CodeEditor";
-import { getMasala, getProblems, getProblemsDetails } from "../services/app";
+import {
+  getMasala,
+  getProblems,
+  getProblemsDetails,
+  getTestCase,
+} from "../services/app";
 import { useParams } from "react-router-dom";
 
 function CodePanels() {
@@ -11,6 +16,7 @@ function CodePanels() {
 
   const [index, setIndex] = useState(null);
   const [code, setCode] = useState("");
+  const [testCase, setTestCase] = useState(null);
 
   useEffect(() => {
     // 1. Barcha masalalarni olish
@@ -28,6 +34,7 @@ function CodePanels() {
 
   useEffect(() => {
     getMasala(details?.id)?.then(setCode);
+    getTestCase()?.then(setTestCase);
   }, [details]);
 
   return (
@@ -55,10 +62,17 @@ function CodePanels() {
               //   setCode({ ...code, template_code: newCode })
               // }
             />
-            <div className="submition">
-              <p>salom</p>
-              <p>salom</p>
-              <p>salom</p>
+            <div className="  ">
+              {testCase?.map((item) => {
+                return (
+                  code?.problem === item?.problem && (
+                    <div className="testCase-contents" key={item?.id}>
+                      <p>{item?.input_data}</p>
+                      <p>{item?.expected_output}</p>
+                    </div>
+                  )
+                );
+              })}
             </div>
           </div>
         </div>

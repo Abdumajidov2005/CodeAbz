@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Problems.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getProblems } from "../services/app";
+import { getToken } from "../services/token";
 
 function Problems() {
   const [problemData, setProblemData] = useState([]);
   const [loader, setLoader] = useState(false);
-
+  const navigate = useNavigate()
+ 
   useEffect(() => {
     setLoader(true);
     getProblems()
@@ -47,6 +49,12 @@ function Problems() {
                       className="card-problem"
                       key={item?.id}
                       to={`/codepanels/${item?.slug}`}
+                      onClick={(e)=>{
+                        if(!getToken()){
+                            e.preventDefault()
+                            navigate("/create accaunt")
+                          }
+                      }}
                     >
                       <div className="title-problems">
                         <div className="sloved">

@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
 import { FaCode, FaCoins, FaRegUser } from "react-icons/fa";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { FaXmark } from "react-icons/fa6";
 
-function Navbar() {
-
+function Navbar({ tokens, setTokens }) {
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <>
@@ -19,12 +21,44 @@ function Navbar() {
             <NavLink to={"/notice"}>Komentariyalar</NavLink>
           </ul>
           <div className="icons">
+            <NavLink to={"/create accaunt"}>Create accaunt</NavLink>
+            <NavLink to={"/signIn"}>SignIn</NavLink>
             <p>
               <FaCoins />
             </p>
-            <p>
-              <FaRegUser />
-            </p>
+            {tokens ? (
+              <p
+                onClick={() => {
+                  setShowModal(true);
+                }}
+              >
+                <FaRegUser />
+              </p>
+            ) : (
+              ""
+            )}
+            <div className={`modal ${showModal ? "active" : ""}`}>
+              <p
+                onClick={() => {
+                  setShowModal(false);
+                }}
+                className="xmark"
+              >
+                <FaXmark />
+              </p>
+              <h3>Kabinet</h3>
+              <span>Accauntni tahriralash</span>
+              <span
+                onClick={() => {
+                  localStorage.clear();
+                  setTokens(null);
+                  setShowModal(false);
+                  navigate("/create accaunt");
+                }}
+              >
+                Accauntdan chiqish
+              </span>
+            </div>
           </div>
         </div>
       </div>

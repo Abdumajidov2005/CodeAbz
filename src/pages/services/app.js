@@ -1,4 +1,5 @@
 import { baseUrl } from "./config";
+import { getToken } from "./token";
 
 export const getProblems = () => {
   const requestOptions = {
@@ -18,10 +19,7 @@ export const getProblems = () => {
 
 export const getProblemsDetails = (slug) => {
   const myHeaders = new Headers();
-  myHeaders.append(
-    "Authorization",
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYyNjk0MTQ4LCJpYXQiOjE3NjAxMDIxNDgsImp0aSI6IjhmNTEwOGFhZjQzNjQ5ODJhNGE0NGM5MmQ0MTdiZWUwIiwidXNlcl9pZCI6M30.WO_IXoo-p54AuG6Vp8mlh5vwUj9PJI7QBFRgT-36QKA"
-  );
+  myHeaders.append("Authorization", `Bearer ${getToken()}`);
 
   const requestOptions = {
     method: "GET",
@@ -38,14 +36,10 @@ export const getProblemsDetails = (slug) => {
     .catch((error) => console.error(error));
 };
 
-
 export const getMasala = (id) => {
-   if (!id) return null;
+  if (!id) return null;
   const myHeaders = new Headers();
-  myHeaders.append(
-    "Authorization",
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYyODg1NzM5LCJpYXQiOjE3NjAyOTM3MzksImp0aSI6IjQ5YWM1ZTk5YmExOTQzMmNhN2EwNWI1ZjVlNzI1YTQwIiwidXNlcl9pZCI6NX0.Er81eqIFVcBJIGer064NVv7Joa9Ju0kk2n5Jzd3-lN4"
-  );
+  myHeaders.append("Authorization", `Bearer ${getToken()}`);
 
   const requestOptions = {
     method: "GET",
@@ -56,7 +50,20 @@ export const getMasala = (id) => {
   return fetch(`${baseUrl}/submissions/template/${id}/`, requestOptions)
     .then((response) => response.json())
     .then((result) => {
-      // console.log(result);
+      return result;
+    })
+    .catch((error) => console.error(error));
+};
+
+export const getTestCase = () => {
+  const requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+
+ return fetch(`${baseUrl}/testcases/`, requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
       return result;
     })
     .catch((error) => console.error(error));

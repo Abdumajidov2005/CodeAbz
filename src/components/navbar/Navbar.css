@@ -13,6 +13,57 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 0px;
+  position: relative;
+}
+
+
+
+.modal{
+  width: 240px;
+  top: 60px;
+  right: 0px;
+  position: absolute;
+  background-color: gray;
+  border-radius: 5px;
+  padding: 20px 10px;
+  transform: scale(0);
+  transition: all .3s ease;
+}
+
+.modal.active{
+  transform: scale(1);
+}
+
+.modal .xmark{
+  width: 25px !important;
+  height: 25px !important;
+  top: 5px;
+  cursor: pointer;
+  right: 5px;
+  position: absolute;
+  background-color: white !important;
+}
+
+.modal h3{
+  font-size: 18px;
+  font-weight: 600;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.modal span{
+  display: block;
+  background-color: rgb(186, 185, 185);
+  margin-bottom: 10px;
+  cursor: pointer;
+  padding: 10px 8px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 10px;
+}
+
+.modal span:last-of-type{
+  margin-bottom: 0px;
 }
 
 .logo {
