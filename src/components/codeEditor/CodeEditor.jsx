@@ -4,10 +4,10 @@ import Editor from "@monaco-editor/react";
 export default function CodeEditor({ code, setCode }) {
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-2">Python kod muhiti</h2>
+    <div className="code-boxs">
+      <h2>Python kod muhiti</h2>
       <Editor
-        width="600px"
+        width="100%"
         height="400px"
         defaultLanguage="python"
         theme="vs-dark"

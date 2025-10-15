@@ -13,71 +13,108 @@ function CodePanels() {
   const { slug } = useParams();
 
   const [details, setDetails] = useState(null);
-
   const [index, setIndex] = useState(null);
   const [code, setCode] = useState("");
-  const [testCase, setTestCase] = useState(null);
+  const [testCase, setTestCase] = useState([]); // ✅ default qiymat: []
+  const [activeCaseId, setActiveCaseId] = useState(null);
 
   useEffect(() => {
-    // 1. Barcha masalalarni olish
     getProblems()?.then((list) => {
-      // slug bo‘yicha topish
       const foundIndex = list.findIndex((item) => item.slug === slug);
       if (foundIndex !== -1) setIndex(foundIndex + 1);
     });
 
-    // 2. Shu masalaning tafsilotini olish
     getProblemsDetails(slug)?.then((data) => {
       setDetails(data);
     });
   }, [slug]);
 
   useEffect(() => {
+    if (!details?.id) return;
     getMasala(details?.id)?.then(setCode);
-    getTestCase()?.then(setTestCase);
+    getTestCase()?.then((cases) => {
+      if (!cases) return;
+      setTestCase(cases);
+      const filtered = cases?.filter((c) => c.problem === details?.id);
+      if (filtered?.length > 0) setActiveCaseId(filtered[0]?.id);
+    });
   }, [details]);
 
+  // 🔎 Filterlangan test case’lar
+  const filteredCases = Array.isArray(testCase)
+    ? testCase
+        .filter((item) => code?.problem === item?.problem)
+        .sort((a, b) => a.order - b.order)
+    : [];
+
+  // 🔎 Hozir aktiv case
+  const activeCase = filteredCases.find((item) => item.id === activeCaseId);
+
   return (
-    <>
-      <div className="codePanels">
-        <div className="container">
-          <div className="coding">
-            <p className="coding-titles">
-              <span>{index}.</span>
-              {details?.title}
-            </p>
-            <p className="leveles">
-              <span>{details?.difficulty}</span>
-              <span>Maslahat</span>
-            </p>
-            <p>{details?.description}</p>
-            <p>{details?.input_example}</p>
-            <p>{details?.output_example}</p>
+    <div className="codePanels">
+      <div className="container">
+        <div className="coding">
+          <h1 className="coding-titles">
+            <span>{index}.</span> {details?.title}
+          </h1>
+          <div className="leveles">
+            <span>{details?.difficulty}</span>
+            <span>Maslahat</span>
           </div>
-          <div className="submitions-borders">
-            <CodeEditor
-              code={code?.template_code}
-              setCode={setCode}
-              // setCode={(newCode) =>
-              //   setCode({ ...code, template_code: newCode })
-              // }
-            />
-            <div className="  ">
-              {testCase?.map((item) => {
-                return (
-                  code?.problem === item?.problem && (
-                    <div className="testCase-contents" key={item?.id}>
-                      <p>{item?.input_data}</p>
-                      <p>{item?.expected_output}</p>
-                    </div>
-                  )
-                );
-              })}
+          <p className="description">{details?.description}</p>
+          <div className="example">
+            <h2>Example</h2>
+            <h4>
+              Input:<span>{details?.input_example}</span>
+            </h4>
+            <h4>
+              Output:<span>{details?.output_example}</span>
+            </h4>
+          </div>
+        </div>
+
+        <div className="submitions-borderss">
+          <CodeEditor code={code?.template_code} setCode={setCode} />
+
+          <div className="submition">
+            {/* CASE LIST */}
+            <div className="case-list">
+              {filteredCases.length > 0 ? (
+                filteredCases.map((item, index) => (
+                  <div
+                    key={item?.id}
+                    onClick={() =>
+                      setActiveCaseId(
+                        activeCaseId === item?.id ? null : item?.id
+                      )
+                    }
+                    className={`case ${
+                      activeCaseId === item?.id ? "active" : ""
+                    }`}
+                  >
+                    <p>case {index + 1}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No test cases found</p>
+              )}
             </div>
+
+            {/* CONTENT AREA — pastda butun widthni egallaydi */}
+            {activeCase && (
+              <div className="testCase-contents-wide">
+                <p>
+                  <strong>Input:</strong> {activeCase.input_data}
+                </p>
+                <p>
+                  <strong>Expected:</strong> {activeCase.expected_output}
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -2,18 +2,17 @@
   display: flex;
   align-items: start;
   justify-content: space-between;
-  font-family: "Roboto", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
   padding: 30px 0px;
 }
 
 .coding {
-  width: 490px;
-  border: 2px solid red;
+  width: 400px;
   font-size: 14px;
   font-weight: 500;
 }
 
-.coding .coding-titles{
+.coding .coding-titles {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -21,14 +20,14 @@
   font-weight: 600;
 }
 
-.leveles{
+.leveles {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 13px 0px;
 }
 
-.leveles span{
+.leveles span {
   display: block;
   padding: 4px 10px;
   background-color: rgba(128, 128, 128, 0.386);
@@ -40,10 +39,72 @@
   cursor: pointer;
 }
 
-.leveles span:nth-child(1){
+.leveles span:nth-child(1) {
   color: green;
 }
 
-.testCase-contents{
-  border: 1px solid red;
+.coding .description {
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.coding .example h2 {
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.coding .example h4 {
+  font-size: 20px;
+  font-weight: 600;
+  padding-left: 10px;
+  padding-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.coding .example h4 span{
+  color: gray;
+}
+
+.submitions-borderss {
+  width: 750px;
+  overflow: hidden;
+}
+
+.submition {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0px;
+  width: 100%;
+  border: 1px solid rebeccapurple;
+}
+
+.case-list {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 10px;
+}
+
+.case-list p {
+  background-color: rgb(184, 183, 183);
+  text-transform: capitalize;
+  border-radius: 5px;
+  font-size: 17px;
+  font-weight: 500;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.case-list p:hover {
+  background-color: rgb(184, 183, 183, 0.5);
+}
+
+.testCase-contents-wide {
+  border: 2px solid green;
 }
