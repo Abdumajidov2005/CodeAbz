@@ -61,7 +61,27 @@ export const getTestCase = () => {
     redirect: "follow",
   };
 
- return fetch(`${baseUrl}/testcases/`, requestOptions)
+  return fetch(`${baseUrl}/testcases/`, requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      return result;
+    })
+    .catch((error) => console.error(error));
+};
+
+// apini shundan olaman
+
+export const getProfilMe = () => {
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${getToken()}`);
+
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  return fetch(`${baseUrl}/users/me/`, requestOptions)
     .then((response) => response.json())
     .then((result) => {
       return result;

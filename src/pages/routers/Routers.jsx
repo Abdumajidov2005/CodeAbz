@@ -2,18 +2,19 @@ import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import Problems from "../problems/Problems";
-import Notice from "../notice/Notice";
 import CodePanels from "../codePanels/CodePanels";
 import Scrolltop from "../../components/scroltop/Scrolltop";
 import CreateAccaunt from "../createAccount/CreateAccaunt";
 import { ToastContainer } from "react-toastify";
 import SignIn from "../signIn/SignIn";
 import { getToken } from "../services/token";
+import ProfilMe from "../profilMe/ProfilMe";
+import LeaderBoard from "../leaderboard/LeaderBoard";
 
 function Routers() {
+  const [tokens, setTokens] = useState(getToken());
+  const [profil, setProfil] = useState(null);
 
-  const [tokens, setTokens] = useState(getToken())
- 
   return (
     <>
       <BrowserRouter>
@@ -22,10 +23,11 @@ function Routers() {
         <Scrolltop />
         <Routes>
           <Route path="/" element={<Problems />} />
-          <Route path="/codepanels/:slug" element={<CodePanels />} />
-          <Route path="/notice" element={<Notice />} />
-          <Route path="/signIn" element={<SignIn  setTokens={setTokens} />} />
+          <Route path="/codepanels/:slug" element={<CodePanels profil={profil} />} />
+          <Route path="/leaderboard" element={<LeaderBoard />} />
+          <Route path="/signIn" element={<SignIn setTokens={setTokens} />} />
           <Route path="/create accaunt" element={<CreateAccaunt />} />
+          <Route path="/profil" element={<ProfilMe profil={profil} setProfil={setProfil} />} />
         </Routes>
       </BrowserRouter>
     </>

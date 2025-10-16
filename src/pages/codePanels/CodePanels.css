@@ -6,6 +6,10 @@
   padding: 30px 0px;
 }
 
+.loader-border {
+  width: 100%;
+}
+
 .coding {
   width: 400px;
   font-size: 14px;
@@ -16,8 +20,10 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 600;
+  display: flex;
+  align-items: start;
 }
 
 .leveles {
@@ -39,8 +45,20 @@
   cursor: pointer;
 }
 
-.leveles span:nth-child(1) {
+.difficultys {
+  font-weight: bold;
+}
+
+.difficultys.easy {
   color: green;
+}
+
+.difficultys.medium {
+  color: orange;
+}
+
+.difficultys.hard {
+  color: red;
 }
 
 .coding .description {
@@ -64,7 +82,7 @@
   gap: 5px;
 }
 
-.coding .example h4 span{
+.coding .example h4 span {
   color: gray;
 }
 

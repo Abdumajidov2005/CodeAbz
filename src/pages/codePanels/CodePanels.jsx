@@ -9,12 +9,12 @@ import {
 } from "../services/app";
 import { useParams } from "react-router-dom";
 
-function CodePanels() {
+function CodePanels({ profil }) {
   const { slug } = useParams();
 
   const [details, setDetails] = useState(null);
   const [index, setIndex] = useState(null);
-  const [code, setCode] = useState("");
+  const [codeBy, setCodeBy] = useState("");
   const [testCase, setTestCase] = useState([]); // ✅ default qiymat: []
   const [activeCaseId, setActiveCaseId] = useState(null);
 
@@ -31,7 +31,7 @@ function CodePanels() {
 
   useEffect(() => {
     if (!details?.id) return;
-    getMasala(details?.id)?.then(setCode);
+    getMasala(details?.id)?.then(setCodeBy);
     getTestCase()?.then((cases) => {
       if (!cases) return;
       setTestCase(cases);
@@ -43,12 +43,37 @@ function CodePanels() {
   // 🔎 Filterlangan test case’lar
   const filteredCases = Array.isArray(testCase)
     ? testCase
-        .filter((item) => code?.problem === item?.problem)
+        .filter((item) => codeBy?.problem === item?.problem)
         .sort((a, b) => a.order - b.order)
     : [];
 
   // 🔎 Hozir aktiv case
   const activeCase = filteredCases.find((item) => item.id === activeCaseId);
+
+  // const getCreateSubmition = () => {
+  //   const myHeaders = new Headers();
+  //   myHeaders.append("Content-Type", "application/json");
+  //   myHeaders.append("Authorization", `Bearer ${getToken()}`);
+
+  //   const raw = JSON.stringify({
+  //     user: 5,
+  //     problem: 51,
+  //     code: "class Solution:\n    def solve(self, a: int, b: int) -> int:\n        return a + b",
+  //     language: "python",
+  //   });
+
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: myHeaders,
+  //     body: raw,
+  //     redirect: "follow",
+  //   };
+
+  //   fetch(`${baseUrl}/submissions/create/`, requestOptions)
+  //     .then((response) => response.json())
+  //     .then((result) => console.log(result))
+  //     .catch((error) => console.error(error));
+  // };
 
   return (
     <div className="codePanels">
@@ -58,8 +83,11 @@ function CodePanels() {
             <span>{index}.</span> {details?.title}
           </h1>
           <div className="leveles">
-            <span>{details?.difficulty}</span>
-            <span>Maslahat</span>
+            <span
+              className={`difficultys ${details?.difficulty?.toLowerCase()}`}
+            >
+              {details?.difficulty}
+            </span>
           </div>
           <p className="description">{details?.description}</p>
           <div className="example">
@@ -74,7 +102,13 @@ function CodePanels() {
         </div>
 
         <div className="submitions-borderss">
-          <CodeEditor code={code?.template_code} setCode={setCode} />
+          <CodeEditor
+            codeBy={codeBy?.template_code || ""}
+            setCodeBy={(value) =>
+              setCodeBy((prev) => ({ ...prev, template_code: value }))
+            }
+            profil={profil}
+          />
 
           <div className="submition">
             {/* CASE LIST */}

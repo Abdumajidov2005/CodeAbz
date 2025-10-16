@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { getToken, setToken } from "../services/token";
 
-function SignIn({ tokens, setTokens }) {
+function SignIn({ setTokens }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
