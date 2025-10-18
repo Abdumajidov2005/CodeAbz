@@ -2,9 +2,15 @@ import React, { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { baseUrl } from "../../pages/services/config";
 import { getToken } from "../../pages/services/token";
-import { getMasala, getProfilMe } from "../../pages/services/app";
+import { getMasala, getProblems, getProfilMe } from "../../pages/services/app";
 
-export default function CodeEditor({ codeBy, setCodeBy, profil, setProfil }) {
+export default function CodeEditor({
+  codeBy,
+  setCodeBy,
+  profil,
+  setProfil,
+  setProblemData,
+}) {
   const [output, setOutput] = useState("");
   const [language, setLanguage] = useState("python"); // default Python
 
@@ -25,7 +31,6 @@ export default function CodeEditor({ codeBy, setCodeBy, profil, setProfil }) {
       language: language,
     });
 
-    console.log(codeBy?.template_code);
 
     const requestOptions = {
       method: "POST",
@@ -37,9 +42,11 @@ export default function CodeEditor({ codeBy, setCodeBy, profil, setProfil }) {
     fetch(`${baseUrl}/submissions/create/`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
         if (result.status === "Accepted") {
           setOutput(`✅ Accepted (${result.execution_time}s)`);
+          getProblems()?.then((data) => {
+            setProblemData(data);
+          });
         } else {
           setOutput(`❌ ${result.status}`);
         }

@@ -2,16 +2,22 @@ import { baseUrl } from "./config";
 import { getToken } from "./token";
 
 export const getProblems = () => {
+  const myHeaders = new Headers();
+  const token = getToken();
+
+  if (token) {
+    myHeaders.append("Authorization", `Bearer ${token}`);
+  }
+
   const requestOptions = {
     method: "GET",
+    headers: myHeaders,
     redirect: "follow",
   };
 
   return fetch(`${baseUrl}/problems/`, requestOptions)
     .then((response) => response.json())
     .then((result) => {
-      // console.log(result);
-
       return result;
     })
     .catch((error) => console.error(error));

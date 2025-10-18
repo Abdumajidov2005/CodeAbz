@@ -9,7 +9,7 @@ import {
 } from "../services/app";
 import { useParams } from "react-router-dom";
 
-function CodePanels({ profil, setProfil }) {
+function CodePanels({ profil, setProfil ,setProblemData }) {
   const { slug } = useParams();
 
   const [details, setDetails] = useState(null);
@@ -84,6 +84,7 @@ function CodePanels({ profil, setProfil }) {
             setCodeBy={setCodeBy}
             profil={profil}
             setProfil={setProfil}
+            setProblemData={setProblemData}
           />
 
           <div className="submition">

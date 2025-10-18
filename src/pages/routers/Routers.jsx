@@ -14,7 +14,7 @@ import LeaderBoard from "../leaderboard/LeaderBoard";
 function Routers() {
   const [tokens, setTokens] = useState(getToken());
   const [profil, setProfil] = useState(null);
-
+  const [problemData, setProblemData] = useState([]);
 
   return (
     <>
@@ -23,13 +23,18 @@ function Routers() {
         <ToastContainer autoClose={1000} />
         <Scrolltop />
         <Routes>
-          <Route path="/" element={<Problems />} />
-          <Route path="/codepanels/:slug" element={<CodePanels profil={profil} setProfil={setProfil}/>} />
+          <Route path="/" element={<Problems setProblemData={setProblemData} problemData={problemData}/>} />
+          <Route
+            path="/codepanels/:slug"
+            element={<CodePanels profil={profil} setProfil={setProfil} setProblemData={setProblemData}/>}
+          />
           <Route path="/leaderboard" element={<LeaderBoard />} />
           <Route path="/signIn" element={<SignIn setTokens={setTokens} />} />
           <Route path="/create accaunt" element={<CreateAccaunt />} />
-          <Route path="/profil" element={<ProfilMe profil={profil} setProfil={setProfil} />} />
-          
+          <Route
+            path="/profil"
+            element={<ProfilMe profil={profil} setProfil={setProfil} />}
+          />
         </Routes>
       </BrowserRouter>
     </>
