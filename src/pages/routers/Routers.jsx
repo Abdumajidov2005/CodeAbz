@@ -15,6 +15,7 @@ function Routers() {
   const [tokens, setTokens] = useState(getToken());
   const [profil, setProfil] = useState(null);
 
+
   return (
     <>
       <BrowserRouter>
@@ -23,11 +24,12 @@ function Routers() {
         <Scrolltop />
         <Routes>
           <Route path="/" element={<Problems />} />
-          <Route path="/codepanels/:slug" element={<CodePanels profil={profil} />} />
+          <Route path="/codepanels/:slug" element={<CodePanels profil={profil} setProfil={setProfil}/>} />
           <Route path="/leaderboard" element={<LeaderBoard />} />
           <Route path="/signIn" element={<SignIn setTokens={setTokens} />} />
           <Route path="/create accaunt" element={<CreateAccaunt />} />
           <Route path="/profil" element={<ProfilMe profil={profil} setProfil={setProfil} />} />
+          
         </Routes>
       </BrowserRouter>
     </>

@@ -1,35 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { baseUrl } from "../../pages/services/config";
 import { getToken } from "../../pages/services/token";
+import { getMasala, getProfilMe } from "../../pages/services/app";
 
-export default function CodeEditor({ codeBy, setCodeBy, profil }) {
+export default function CodeEditor({ codeBy, setCodeBy, profil, setProfil }) {
   const [output, setOutput] = useState("");
   const [language, setLanguage] = useState("python"); // default Python
 
-  const getCreateSubmition = async () => {
-    try {
-      const response = await fetch(`${baseUrl}/submissions/create/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getToken()}`,
-        },
-        body: JSON.stringify({
-          user: profil?.id, // yoki login qilgan foydalanuvchi ID
-          problem: codeBy?.problem, // tanlangan masala ID
-          code: codeBy, // editordagi kod
-          language: language,
-        }),
-      });
+  useEffect(() => {
+    getProfilMe()?.then(setProfil);
+    getMasala()?.then(setCodeBy);
+  }, []);
 
-      const result = await response.json();
-      console.log(result);
-      setOutput(JSON.stringify(result, null, 2));
-    } catch (error) {
-      console.error(error);
-      setOutput("Xatolik yuz berdi");
-    }
+  const getCreateSubmition = () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", `Bearer ${getToken()}`);
+
+    const raw = JSON.stringify({
+      user: profil?.id,
+      problem: codeBy?.problem,
+      code: codeBy?.template_code,
+      language: language,
+    });
+
+    console.log(codeBy?.template_code);
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${baseUrl}/submissions/create/`, requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        if (result.status === "Accepted") {
+          setOutput(`✅ Accepted (${result.execution_time}s)`);
+        } else {
+          setOutput(`❌ ${result.status}`);
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -40,19 +55,22 @@ export default function CodeEditor({ codeBy, setCodeBy, profil }) {
         className="language-select"
       >
         <option value="python">Python</option>
-        {/* <option value="javascript">JavaScript</option>
-        <option value="cpp">C++</option>
-        <option value="java">Java</option> */}
-        {/* kerak bo‘lsa boshqa tillar qo‘shish mumkin */}
       </select>
       <Editor
         width="100%"
         height="400px"
-        defaultLanguage="python"
+        defaultLanguage={language}
         theme="vs-dark"
-        value={codeBy}
-        onChange={(value) => setCodeBy(value)}
+        value={
+          typeof codeBy?.template_code === "string" ? codeBy.template_code : ""
+        } // ✅ faqat string
+        onChange={(value) => {
+          // Monaco `onChange` ba’zan `undefined` qaytaradi
+          const safeValue = value || "";
+          setCodeBy((prev) => ({ ...prev, template_code: safeValue }));
+        }}
       />
+
       <button onClick={getCreateSubmition} className="run-btn">
         Submit
       </button>

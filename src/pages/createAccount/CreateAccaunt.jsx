@@ -12,10 +12,11 @@ function CreateAccaunt() {
   const [bio, setBio] = useState("");
   const [country, setCountry] = useState("");
 
+  const navigate = useNavigate();
+
   const createAccaunt = () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    const navigate = useNavigate()
 
     const raw = JSON.stringify({
       username: username,
@@ -35,14 +36,16 @@ function CreateAccaunt() {
     fetch(`${baseUrl}/users/register/`, requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
-        if (result?.username[0]) {
-          toast.error(result?.username[0]);
-        } else if (result?.email[0]) {
-          toast.error(result?.email[0]);
+        console.log(result?.email[0]);
+        if (Array.isArray(result.username) && result.username[0]) {
+          toast.error(result.username[0]);
+        } else if (Array.isArray(result.email) && result.email[0]) {
+          toast.error(result.email[0]);
+        } else if (result.detail) {
+          toast.error(result.detail);
         } else {
-          toast.success("Accaunt yaratildi");
-          navigate("/")
+          toast.success("Accaunt yaratildi ✅");
+          navigate("/signIn");
         }
       })
       .catch((error) => console.error(error));
@@ -119,9 +122,7 @@ function CreateAccaunt() {
               <Button className="btns" type="submit" variant="contained">
                 Submit
               </Button>
-              <Link to={"/signIn"}>
-                Kirish
-              </Link>
+              <Link to={"/signIn"}>Kirish</Link>
             </div>
           </form>
         </div>

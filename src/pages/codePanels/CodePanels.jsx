@@ -9,7 +9,7 @@ import {
 } from "../services/app";
 import { useParams } from "react-router-dom";
 
-function CodePanels({ profil }) {
+function CodePanels({ profil, setProfil }) {
   const { slug } = useParams();
 
   const [details, setDetails] = useState(null);
@@ -17,6 +17,8 @@ function CodePanels({ profil }) {
   const [codeBy, setCodeBy] = useState("");
   const [testCase, setTestCase] = useState([]); // ✅ default qiymat: []
   const [activeCaseId, setActiveCaseId] = useState(null);
+
+
 
   useEffect(() => {
     getProblems()?.then((list) => {
@@ -50,31 +52,6 @@ function CodePanels({ profil }) {
   // 🔎 Hozir aktiv case
   const activeCase = filteredCases.find((item) => item.id === activeCaseId);
 
-  // const getCreateSubmition = () => {
-  //   const myHeaders = new Headers();
-  //   myHeaders.append("Content-Type", "application/json");
-  //   myHeaders.append("Authorization", `Bearer ${getToken()}`);
-
-  //   const raw = JSON.stringify({
-  //     user: 5,
-  //     problem: 51,
-  //     code: "class Solution:\n    def solve(self, a: int, b: int) -> int:\n        return a + b",
-  //     language: "python",
-  //   });
-
-  //   const requestOptions = {
-  //     method: "POST",
-  //     headers: myHeaders,
-  //     body: raw,
-  //     redirect: "follow",
-  //   };
-
-  //   fetch(`${baseUrl}/submissions/create/`, requestOptions)
-  //     .then((response) => response.json())
-  //     .then((result) => console.log(result))
-  //     .catch((error) => console.error(error));
-  // };
-
   return (
     <div className="codePanels">
       <div className="container">
@@ -103,11 +80,10 @@ function CodePanels({ profil }) {
 
         <div className="submitions-borderss">
           <CodeEditor
-            codeBy={codeBy?.template_code || ""}
-            setCodeBy={(value) =>
-              setCodeBy((prev) => ({ ...prev, template_code: value }))
-            }
+            codeBy={codeBy}
+            setCodeBy={setCodeBy}
             profil={profil}
+            setProfil={setProfil}
           />
 
           <div className="submition">
