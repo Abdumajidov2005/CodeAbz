@@ -22,6 +22,10 @@
   margin: 0 auto;
 }
 
+body{
+  background-color: rgb(250, 248, 248);
+}
+
 ul {
   list-style: none;
 }

@@ -9,7 +9,7 @@ import {
 } from "../services/app";
 import { useParams } from "react-router-dom";
 
-function CodePanels({ profil, setProfil ,setProblemData }) {
+function CodePanels({ profil, setProfil, setProblemData }) {
   const { slug } = useParams();
 
   const [details, setDetails] = useState(null);
@@ -17,8 +17,10 @@ function CodePanels({ profil, setProfil ,setProblemData }) {
   const [codeBy, setCodeBy] = useState("");
   const [testCase, setTestCase] = useState([]); // ✅ default qiymat: []
   const [activeCaseId, setActiveCaseId] = useState(null);
+  const [output, setOutput] = useState("");
 
-
+  const [testCaseWatch, setTestCaseWatch] = useState(true);
+  const [runTimeWatch, setRunTimeWatch] = useState(false);
 
   useEffect(() => {
     getProblems()?.then((list) => {
@@ -85,43 +87,69 @@ function CodePanels({ profil, setProfil ,setProblemData }) {
             profil={profil}
             setProfil={setProfil}
             setProblemData={setProblemData}
+            output={output}
+            setOutput={setOutput}
+            setRunTimeWatch={setRunTimeWatch}
+            setTestCaseWatch={setTestCaseWatch}
           />
 
           <div className="submition">
-            {/* CASE LIST */}
-            <div className="case-list">
-              {filteredCases.length > 0 ? (
-                filteredCases.map((item, index) => (
-                  <div
-                    key={item?.id}
-                    onClick={() =>
-                      setActiveCaseId(
-                        activeCaseId === item?.id ? null : item?.id
-                      )
-                    }
-                    className={`case ${
-                      activeCaseId === item?.id ? "active" : ""
-                    }`}
-                  >
-                    <p>case {index + 1}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No test cases found</p>
+            <div className="testings">
+              <p
+                className={testCaseWatch ? "active" : ""}
+                onClick={() => {
+                  setTestCaseWatch(true);
+                  setRunTimeWatch(false);
+                }}
+              >
+                Testcase
+              </p>
+              <p
+                className={runTimeWatch ? "active" : ""}
+                onClick={() => {
+                  setRunTimeWatch(true);
+                  setTestCaseWatch(false);
+                }}
+              >
+                Run time
+              </p>
+            </div>
+            <div className={`case-blocktest ${testCaseWatch ? "active" : ""}`}>
+              {/* CASE LIST */}
+              <div className="case-list">
+                {filteredCases.length > 0 ? (
+                  filteredCases.map((item, index) => (
+                    <div
+                      key={item?.id}
+                      onClick={() => setActiveCaseId(item?.id)}
+                      className={`case ${
+                        activeCaseId === item?.id ? "active" : ""
+                      }`}
+                    >
+                      <p>case {index + 1}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>No test cases found</p>
+                )}
+              </div>
+              {/* CONTENT AREA — pastda butun widthni egallaydi */}
+              {activeCase && (
+                <div className="testCase-contents-wide">
+                  <p>
+                    <strong>Input:</strong> {activeCase.input_data}
+                  </p>
+                  <p>
+                    <strong>Expected:</strong> {activeCase.expected_output}
+                  </p>
+                </div>
               )}
             </div>
-
-            {/* CONTENT AREA — pastda butun widthni egallaydi */}
-            {activeCase && (
-              <div className="testCase-contents-wide">
-                <p>
-                  <strong>Input:</strong> {activeCase.input_data}
-                </p>
-                <p>
-                  <strong>Expected:</strong> {activeCase.expected_output}
-                </p>
-              </div>
-            )}
+            <div className={`output-box ${runTimeWatch ? "active" : ""}`}>
+              <p>{
+                output ? output :"salom"
+                }</p>
+            </div>
           </div>
         </div>
       </div>

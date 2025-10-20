@@ -10,8 +10,10 @@ export default function CodeEditor({
   profil,
   setProfil,
   setProblemData,
+  setOutput,
+  setRunTimeWatch,
+  setTestCaseWatch
 }) {
-  const [output, setOutput] = useState("");
   const [language, setLanguage] = useState("python"); // default Python
 
   useEffect(() => {
@@ -30,7 +32,6 @@ export default function CodeEditor({
       code: codeBy?.template_code,
       language: language,
     });
-
 
     const requestOptions = {
       method: "POST",
@@ -63,6 +64,13 @@ export default function CodeEditor({
       >
         <option value="python">Python</option>
       </select>
+      <button onClick={()=>{
+        getCreateSubmition()
+        setRunTimeWatch(true)
+        setTestCaseWatch(false)
+      }} className="run-btn">
+        Submit
+      </button>
       <Editor
         width="100%"
         height="400px"
@@ -78,10 +86,6 @@ export default function CodeEditor({
         }}
       />
 
-      <button onClick={getCreateSubmition} className="run-btn">
-        Submit
-      </button>
-      <pre className="output-box">{output}</pre>
     </div>
   );
 }

@@ -22,7 +22,7 @@
 }
 
 .problems-panel .problems_questions .card-problem:nth-child(even) {
-  background-color: white;
+  background-color: transparent;
 }
 
 .problems-panel .problems_questions .card-problem:hover {
