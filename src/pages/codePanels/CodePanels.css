@@ -7,12 +7,14 @@
 }
 
 .coding {
-  width: 430px;
+  width: 445px;
+  height: 634px;
   font-size: 14px;
   font-weight: 500;
   border: 1px solid rgb(225, 223, 223);
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 10px 10px;
+  overflow-y: scroll;
 }
 
 .coding .coding-titles {
@@ -59,16 +61,21 @@
 .coding .description {
   margin-bottom: 10px;
   letter-spacing: 1px;
+  font-size: 16px;
+  font-family: "Fira Code", monospace;
 }
 
 .coding .example h2 {
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 600;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .coding .example h4 {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 600;
   padding-left: 10px;
   padding-bottom: 6px;
