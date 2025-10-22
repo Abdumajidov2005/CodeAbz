@@ -75,6 +75,9 @@ function CodePanels({ profil, setProfil, setProblemData }) {
           {details?.examples?.map((item, index) => {
             return (
               <div key={index} className="example">
+                <h1>
+                  Example {index+1}:
+                </h1>
                 <h4>
                   Input:<span>{item?.ex_input}</span>
                 </h4>
