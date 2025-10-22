@@ -3,28 +3,23 @@
   align-items: start;
   justify-content: space-between;
   /* font-family: "Roboto", sans-serif; */
-  padding: 30px 0px;
-}
-
-.loader-border {
-  width: 100%;
+  padding: 10px 0px;
 }
 
 .coding {
-  width: 400px;
+  width: 430px;
   font-size: 14px;
   font-weight: 500;
+  border: 1px solid rgb(225, 223, 223);
+  border-radius: 4px;
+  padding: 10px 10px;
 }
 
 .coding .coding-titles {
-  display: flex;
-  align-items: center;
-  gap: 5px;
   font-size: 28px;
   font-weight: 600;
-  display: flex;
-  align-items: start;
 }
+
 
 .leveles {
   display: flex;
@@ -191,4 +186,11 @@
 
 .output-box.active {
   display: block;
+}
+
+.editor-boxs{
+  border: 1px solid rgb(225, 223, 223);
+  margin-bottom: 10px;
+  border-radius: 5px;
+  overflow: hidden;
 }

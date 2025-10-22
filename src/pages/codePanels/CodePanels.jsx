@@ -72,29 +72,34 @@ function CodePanels({ profil, setProfil, setProblemData }) {
             </span>
           </div>
           <p className="description">{details?.description}</p>
-          <div className="example">
-            <h2>Example</h2>
-            <h4>
-              Input:<span>{details?.input_example}</span>
-            </h4>
-            <h4>
-              Output:<span>{details?.output_example}</span>
-            </h4>
-          </div>
+          {details?.examples?.map((item, index) => {
+            return (
+              <div key={index} className="example">
+                <h4>
+                  Input:<span>{item?.ex_input}</span>
+                </h4>
+                <h4>
+                  Output:<span>{item?.ex_output}</span>
+                </h4>
+              </div>
+            );
+          })}
         </div>
 
         <div className="submitions-borderss">
-          <CodeEditor
-            codeBy={codeBy}
-            setCodeBy={setCodeBy}
-            profil={profil}
-            setProfil={setProfil}
-            setProblemData={setProblemData}
-            output={output}
-            setOutput={setOutput}
-            setRunTimeWatch={setRunTimeWatch}
-            setTestCaseWatch={setTestCaseWatch}
-          />
+          <div className="editor-boxs">
+            <CodeEditor
+              codeBy={codeBy}
+              setCodeBy={setCodeBy}
+              profil={profil}
+              setProfil={setProfil}
+              setProblemData={setProblemData}
+              output={output}
+              setOutput={setOutput}
+              setRunTimeWatch={setRunTimeWatch}
+              setTestCaseWatch={setTestCaseWatch}
+            />
+          </div>
 
           <div className="submition">
             <div className="testings">
