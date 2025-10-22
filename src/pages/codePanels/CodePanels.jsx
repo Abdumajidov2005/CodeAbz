@@ -47,7 +47,10 @@ function CodePanels({ profil, setProfil, setProblemData }) {
   // 🔎 Filterlangan test case’lar
   const filteredCases = Array.isArray(testCase)
     ? testCase
-        .filter((item) => codeBy?.problem === item?.problem)
+        .filter(
+          (item) =>
+            codeBy?.problem === item?.problem && item?.is_hidden === false
+        )
         .sort((a, b) => a.order - b.order)
     : [];
 
