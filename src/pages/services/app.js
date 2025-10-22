@@ -94,3 +94,17 @@ export const getProfilMe = () => {
     })
     .catch((error) => console.error(error));
 };
+
+export const getLeaderBoard = () => {
+  const requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+
+  return fetch(`${baseUrl}/leaderboard/`, requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      return result;
+    })
+    .catch((error) => console.error(error));
+};

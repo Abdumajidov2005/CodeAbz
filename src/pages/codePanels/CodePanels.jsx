@@ -146,9 +146,7 @@ function CodePanels({ profil, setProfil, setProblemData }) {
               )}
             </div>
             <div className={`output-box ${runTimeWatch ? "active" : ""}`}>
-              <p>{
-                output ? output :"salom"
-                }</p>
+              <p>{output ? output : "salom"}</p>
             </div>
           </div>
         </div>

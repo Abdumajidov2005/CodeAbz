@@ -105,7 +105,7 @@
   border-radius: 10px;
   cursor: pointer;
   background-color: transparent;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   font-size: 16px;
   font-weight: 400;
   color: gray;
@@ -115,7 +115,7 @@
   background-color: rgb(225, 223, 223);
 }
 
-.testings p.active{
+.testings p.active {
   color: black;
   font-weight: 900;
 }
@@ -124,7 +124,6 @@
   display: flex;
   align-items: start;
   flex-direction: column;
-  gap: 20px;
   width: 100%;
   background-color: rgb(255, 255, 255);
   border: 0.5px solid rgba(0, 0, 0, 0.184);
@@ -133,17 +132,17 @@
   overflow: hidden;
 }
 
-
-.case-blocktest{
+.case-blocktest {
   width: 100%;
   display: flex;
   align-items: start;
   flex-direction: column;
   gap: 15px;
   display: none;
+  padding: 10px;
 }
 
-.case-blocktest.active{
+.case-blocktest.active {
   display: flex;
 }
 
@@ -153,11 +152,14 @@
   align-items: center;
   justify-content: left;
   gap: 10px;
-  padding: 0px 10px;
+}
+
+.case.active{
+  background-color: rgb(235, 235, 235);
+  border-radius: 5px;
 }
 
 .case-list p {
-  background-color: rgb(184, 183, 183);
   text-transform: capitalize;
   border-radius: 5px;
   font-size: 17px;
@@ -171,16 +173,22 @@
 }
 
 .testCase-contents-wide {
-  border: 2px solid green;
-  padding: 0px 10px;
   width: 100%;
 }
 
+.testCase-contents-wide p {
+  font-size: 18px;
+  font-weight: 600;
+  background-color: rgb(243, 241, 241);
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
 
-.output-box{
+.output-box {
   display: none;
 }
 
-.output-box.active{
+.output-box.active {
   display: block;
 }

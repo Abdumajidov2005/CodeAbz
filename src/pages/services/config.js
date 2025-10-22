@@ -1,1 +1,1 @@
-export const baseUrl = "http://13.61.149.80"
+export const baseUrl = "https://abzorithm.abboskhoja.site"

@@ -51,6 +51,7 @@ export default function CodeEditor({
         } else {
           setOutput(`❌ ${result.status}`);
         }
+        
       })
       .catch((error) => console.error(error));
   };
@@ -75,7 +76,7 @@ export default function CodeEditor({
         width="100%"
         height="400px"
         defaultLanguage={language}
-        theme="vs-dark"
+        // theme=""
         value={
           typeof codeBy?.template_code === "string" ? codeBy.template_code : ""
         } // ✅ faqat string
@@ -83,6 +84,9 @@ export default function CodeEditor({
           // Monaco `onChange` ba’zan `undefined` qaytaradi
           const safeValue = value || "";
           setCodeBy((prev) => ({ ...prev, template_code: safeValue }));
+        }}
+        options={{
+          
         }}
       />
 
