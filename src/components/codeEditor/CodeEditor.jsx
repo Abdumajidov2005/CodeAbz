@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
+import prettier from "prettier/standalone";
+import * as prettierPlugins from "prettier/plugins/babel"; // ✅ only JS plugin
+
 import { baseUrl } from "../../pages/services/config";
 import { getToken } from "../../pages/services/token";
 import { getMasala, getProblems, getProfilMe } from "../../pages/services/app";
-
+import "./CodeEditor.css";
 
 export default function CodeEditor({
   codeBy,
@@ -15,7 +18,15 @@ export default function CodeEditor({
   setRunTimeWatch,
   setTestCaseWatch,
 }) {
-  const [language, setLanguage] = useState("python"); // default Python
+  const [language, setLanguage] = useState("python");
+  const [selection, setSelection] = useState("Python");
+  const [opening, setOpening] = useState(false);
+  const [search, setSearch] = useState("");
+  const ref = useRef(null);
+  const optionRef = useRef(null);
+  const editorRef = useRef(null);
+
+  const options = ["Python", "JavaScript"];
 
   useEffect(() => {
     getProfilMe()?.then(setProfil);
@@ -24,16 +35,16 @@ export default function CodeEditor({
 
   const beforeMount = (monaco) => {
     monaco.editor.defineTheme("myCustomTheme", {
-      base: "vs", // "vs-dark" ham bo'lishi mumkin
+      base: "vs",
       inherit: false,
       rules: [
-        { token: "keyword", foreground: "#FF0000" }, // keyword qizil bo‘lsin
-        { token: "string", foreground: "#137613ff" }, // string yashil bo‘lsin
-        { token: "comment", foreground: "#2358eaff", fontStyle: "italic" }, // comment kul rang va italic
+        { token: "keyword", foreground: "#ff3300ff" },
+        { token: "string", foreground: "#137613ff" },
+        { token: "comment", foreground: "#aaaaaaff", fontStyle: "italic" },
       ],
       colors: {
-        "editor.background": "#FAF8F8", // fon rangi
-        "editor.foreground": "#201bbdff", // text rangi
+        "editor.background": "#FAF8F8",
+        "editor.foreground": "#1b31bdff",
       },
     });
   };
@@ -47,67 +58,176 @@ export default function CodeEditor({
       user: profil?.id,
       problem: codeBy?.problem,
       code: codeBy?.template_code,
-      language: language,
+      language,
     });
 
-    const requestOptions = {
+    fetch(`${baseUrl}/submissions/create/`, {
       method: "POST",
       headers: myHeaders,
       body: raw,
-      redirect: "follow",
-    };
-
-    fetch(`${baseUrl}/submissions/create/`, requestOptions)
-      .then((response) => response.json())
+    })
+      .then((r) => r.json())
       .then((result) => {
         if (result.status === "Accepted") {
           setOutput(`✅ Accepted (${result.execution_time}s)`);
-          getProblems()?.then((data) => {
-            setProblemData(data);
-          });
-        } else {
-          setOutput(`❌ ${result.status}`);
-        }
+          getProblems()?.then((data) => setProblemData(data));
+        } else setOutput(`❌ ${result.status}`);
       })
-      .catch((error) => console.error(error));
+      .catch(console.error);
   };
+
+  const handleEditorMount = (editor) => {
+    editorRef.current = editor;
+  };
+
+  const handleCleanCode = () => {
+    if (!editorRef.current) return;
+
+    try {
+      const code = editorRef.current.getValue();
+      const lines = code.split("\n");
+
+      const cleanedLines = [];
+      let previousEmpty = false;
+
+      for (let line of lines) {
+        // 1️⃣ Satr boshidagi indentni aniqlaymiz
+        const indentMatch = line.match(/^\s*/);
+        let indent = indentMatch ? indentMatch[0] : "";
+
+        // 2️⃣ Tabni 4-space ga o‘girib, bo‘sh joylarni standart qilamiz
+        indent = indent.replace(/\t/g, "    ");
+
+        // 3️⃣ Satr oxiridagi bo'sh joylarni o'chiramiz
+        const trimmedContent = line.trimEnd();
+
+        if (trimmedContent === "") {
+          if (!previousEmpty) {
+            cleanedLines.push("");
+            previousEmpty = true;
+          }
+        } else {
+          // 4️⃣ Satr boshidagi ortiqcha bo‘sh joylarni olib tashlaymiz
+          cleanedLines.push(indent + trimmedContent.trimStart());
+          previousEmpty = false;
+        }
+      }
+
+      const cleanedCode = cleanedLines.join("\n");
+
+      editorRef.current.setValue(cleanedCode);
+      setCodeBy((prev) => ({
+        ...(prev || {}),
+        template_code: cleanedCode,
+      }));
+    } catch (e) {
+      console.error("Clean Code error:", e);
+    }
+  };
+
+  const filtered = options.filter((opt) =>
+    opt.toLowerCase().includes(search.toLowerCase())
+  );
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (
+        ref.current &&
+        !ref.current.contains(e.target) &&
+        optionRef.current &&
+        !optionRef.current.contains(e.target)
+      ) {
+        setOpening(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <div className="code-boxs">
-      <select
-        value={language}
-        onChange={(e) => setLanguage(e.target.value)}
-        className="language-select"
-      >
-        <option value="python">Python</option>
-      </select>
-     
-      <button
-        onClick={() => {
-          getCreateSubmition();
-          setRunTimeWatch(true);
-          setTestCaseWatch(false);
-        }}
-        className="run-btn"
-      >
-        Submit
-      </button>
+      <div className="submitions">
+        <div className="submit-inputs">
+          {/* Custom Select */}
+          <div ref={optionRef} className="select-box">
+            <div
+              ref={ref}
+              className="selected"
+              onClick={() => setOpening(!opening)}
+            >
+              {selection}
+              <span className={`arrow ${opening ? "up" : "down"}`} />
+            </div>
+
+            {opening && (
+              <div className="options1 show">
+                <input
+                  type="text"
+                  placeholder="Qidirish..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="search-input"
+                />
+                {filtered.length > 0 ? (
+                  filtered.map((option, idx) => (
+                    <div
+                      key={idx}
+                      className="option"
+                      onClick={() => {
+                        setSelection(option);
+                        setLanguage(option.toLowerCase());
+                        setOpening(false);
+                        setSearch("");
+                      }}
+                    >
+                      {option}
+                    </div>
+                  ))
+                ) : (
+                  <div className="no-option">Topilmadi</div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={() => {
+              getCreateSubmition();
+              setRunTimeWatch(true);
+              setTestCaseWatch(false);
+            }}
+            className="run-btn"
+          >
+            Submit
+          </button>
+        </div>
+
+        <div className="action-buttons">
+          <button
+            onClick={handleCleanCode}
+            className="clean-btn"
+            title="Clean code (auto format)"
+          >
+            Clean Code
+          </button>
+        </div>
+      </div>
+
+      {/* Editor */}
       <Editor
         width="100%"
         height="400px"
         defaultLanguage={language}
-        beforeMount={beforeMount} // 👈 shu yerda theme define qilinadi
-        theme="myCustomTheme" //
-        value={
-          typeof codeBy?.template_code === "string" ? codeBy.template_code : ""
-        } // ✅ faqat string
-        onChange={(value) => {
-          // Monaco `onChange` ba’zan `undefined` qaytaradi
-          const safeValue = value || "";
-          setCodeBy((prev) => ({ ...prev, template_code: safeValue }));
-        }}
+        beforeMount={beforeMount}
+        onMount={handleEditorMount}
+        theme="myCustomTheme"
+        value={codeBy?.template_code || ""}
+        onChange={(value) =>
+          setCodeBy((prev) => ({ ...prev, template_code: value || "" }))
+        }
         options={{
           colorDecorators: true,
+          minimap: { enabled: false },
         }}
       />
     </div>

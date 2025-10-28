@@ -127,6 +127,8 @@
   align-items: start;
   flex-direction: column;
   width: 100%;
+  height: 178px;
+  overflow-y: scroll;
   background-color: rgb(255, 255, 255);
   border: 0.5px solid rgba(0, 0, 0, 0.184);
   border-radius: 10px;
