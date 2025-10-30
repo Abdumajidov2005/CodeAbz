@@ -111,7 +111,11 @@
   font-size: 16px;
   font-weight: 400;
   color: gray;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+
 
 .testings p:hover {
   background-color: rgb(225, 223, 223);

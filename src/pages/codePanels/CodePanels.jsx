@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./CodePanels.css";
+import { FaNoteSticky } from "react-icons/fa6";
 import CodeEditor from "../../components/codeEditor/CodeEditor";
+import { GiSandsOfTime } from "react-icons/gi";
+
 import {
   getMasala,
   getProblems,
@@ -99,7 +102,9 @@ function CodePanels({ profil, setProfil, setProblemData }) {
 
           {details?.examples?.map((item, index) => (
             <div key={index} className="example">
-              <h2>Example <span>{index + 1}</span>:</h2>
+              <h2>
+                Example <span>{index + 1}</span>:
+              </h2>
               <h4>
                 Input: <span>{item?.ex_input}</span>
               </h4>
@@ -134,6 +139,7 @@ function CodePanels({ profil, setProfil, setProblemData }) {
                   setRunTimeWatch(false);
                 }}
               >
+                <FaNoteSticky />
                 Testcase
               </p>
               <p
@@ -143,6 +149,9 @@ function CodePanels({ profil, setProfil, setProblemData }) {
                   setTestCaseWatch(false);
                 }}
               >
+                <span>
+                  <GiSandsOfTime />
+                </span>
                 Run time
               </p>
             </div>
