@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
-import prettier from "prettier/standalone";
-import * as prettierPlugins from "prettier/plugins/babel"; // ✅ only JS plugin
 
 import { baseUrl } from "../../pages/services/config";
 import { getToken } from "../../pages/services/token";
@@ -17,6 +15,7 @@ export default function CodeEditor({
   setOutput,
   setRunTimeWatch,
   setTestCaseWatch,
+  setLoaderRunTime,
 }) {
   const [language, setLanguage] = useState("python");
   const [selection, setSelection] = useState("Python");
@@ -50,6 +49,7 @@ export default function CodeEditor({
   };
 
   const getCreateSubmition = () => {
+    setLoaderRunTime(true)
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", `Bearer ${getToken()}`);
@@ -68,12 +68,18 @@ export default function CodeEditor({
     })
       .then((r) => r.json())
       .then((result) => {
+        
         if (result.status === "Accepted") {
           setOutput(`✅ Accepted (${result.execution_time}s)`);
           getProblems()?.then((data) => setProblemData(data));
-        } else setOutput(`❌ ${result.status}`);
+        } else {
+          setOutput(`❌ ${result.status}`);
+        }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(()=>{
+        setLoaderRunTime(false)
+      })
   };
 
   const handleEditorMount = (editor) => {

@@ -35,7 +35,7 @@ function Navbar({ tokens, setTokens }) {
             <h1>CodeAbz</h1>
           </Link>
           <ul className="links">
-            <NavLink to={"/"}>Masalalar</NavLink>
+            <NavLink to={"/"}>Problems</NavLink>
             <NavLink to={"/leaderboard"}>LeaderBoard</NavLink>
           </ul>
           <div className="icons">

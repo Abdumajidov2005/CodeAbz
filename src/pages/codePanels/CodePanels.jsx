@@ -14,6 +14,7 @@ import { useParams } from "react-router-dom";
 
 function CodePanels({ profil, setProfil, setProblemData }) {
   const { slug } = useParams();
+  const [loaderRunTime, setLoaderRunTime] = useState(false);
 
   const [details, setDetails] = useState(null);
   const [index, setIndex] = useState(null);
@@ -127,6 +128,7 @@ function CodePanels({ profil, setProfil, setProblemData }) {
               setOutput={setOutput}
               setRunTimeWatch={setRunTimeWatch}
               setTestCaseWatch={setTestCaseWatch}
+              setLoaderRunTime={setLoaderRunTime}
             />
           </div>
 
@@ -188,8 +190,21 @@ function CodePanels({ profil, setProfil, setProblemData }) {
             </div>
 
             <div className={`output-box ${runTimeWatch ? "active" : ""}`}>
-              <p>{output || "No output yet"}</p>
+              {loaderRunTime ? (
+                <div className="loader_output">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              ) : output.length == 0 ? (
+                <p className="not-watch_output">You must run your code first</p>
+              ) : (
+                <div>
+                  <p>{output}</p>
+                </div>
+              )}
             </div>
+            
           </div>
         </div>
       </div>
